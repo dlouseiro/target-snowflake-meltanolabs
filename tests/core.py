@@ -38,7 +38,7 @@ class SnowflakeTargetArrayData(TargetArrayData):
         assert result.rowcount == 4
         row = result.first()
         if self.target.config.get("add_record_metadata", True):
-            assert len(row) == 8
+            assert len(row) == 9
         else:
             assert len(row) == 2
 
@@ -53,6 +53,7 @@ class SnowflakeTargetArrayData(TargetArrayData):
             "_sdc_deleted_at": sct.TIMESTAMP_NTZ,
             "_sdc_table_version": sct.NUMBER,
             "_sdc_sequence": sct.NUMBER,
+            "_sdc_sync_started_at": sct.NUMBER,
         }
         for column in table_schema.columns:
             assert column.name in expected_types
@@ -85,6 +86,7 @@ class SnowflakeTargetCamelcaseComplexSchema(TargetCamelcaseComplexSchema):
             "_sdc_deleted_at": sct.TIMESTAMP_NTZ,
             "_sdc_table_version": sct.NUMBER,
             "_sdc_sequence": sct.NUMBER,
+            "_sdc_sync_started_at": sct.NUMBER,
         }
         for column in table_schema.columns:
             assert column.name in expected_types
@@ -106,7 +108,7 @@ class SnowflakeTargetDuplicateRecords(TargetDuplicateRecords):
         }
         assert result.rowcount == 2
         for row in result:
-            assert len(row) == 8
+            assert len(row) == 9
             assert row[0] in expected_value
             assert expected_value.get(row[0]) == row[1]
 
@@ -120,6 +122,7 @@ class SnowflakeTargetDuplicateRecords(TargetDuplicateRecords):
             "_sdc_deleted_at": sct.TIMESTAMP_NTZ,
             "_sdc_table_version": sct.NUMBER,
             "_sdc_sequence": sct.NUMBER,
+            "_sdc_sync_started_at": sct.NUMBER,
         }
         for column in table_schema.columns:
             assert column.name in expected_types
@@ -150,6 +153,7 @@ class SnowflakeTargetCamelcaseTest(TargetCamelcaseTest):
             "_sdc_deleted_at": sct.TIMESTAMP_NTZ,
             "_sdc_table_version": sct.NUMBER,
             "_sdc_sequence": sct.NUMBER,
+            "_sdc_sync_started_at": sct.NUMBER,
         }
         for column in table_schema.columns:
             assert column.name in expected_types
@@ -229,7 +233,7 @@ class SnowflakeTargetSchemaNoProperties(TargetSchemaNoProperties):
             assert result.rowcount == 2
             row = result.first()
             if self.target.config.get("add_record_metadata", True):
-                assert len(row) == 7
+                assert len(row) == 8
             else:
                 assert len(row) == 1
 
@@ -242,6 +246,7 @@ class SnowflakeTargetSchemaNoProperties(TargetSchemaNoProperties):
                 "_sdc_deleted_at": sct.TIMESTAMP_NTZ,
                 "_sdc_table_version": sct.NUMBER,
                 "_sdc_sequence": sct.NUMBER,
+                "_sdc_sync_started_at": sct.NUMBER,
             }
             for column in table_schema.columns:
                 assert column.name in expected_types
@@ -280,6 +285,7 @@ class SnowflakeTargetSchemaUpdates(TargetSchemaUpdates):
             "_sdc_deleted_at": sct.TIMESTAMP_NTZ,
             "_sdc_table_version": sct.NUMBER,
             "_sdc_sequence": sct.NUMBER,
+            "_sdc_sync_started_at": sct.NUMBER,
         }
         for column in table_schema.columns:
             assert column.name in expected_types
@@ -305,7 +311,7 @@ class SnowflakeTargetReservedWords(TargetFileTestTemplate):
         )
         assert result.rowcount == 2
         row = result.first()
-        assert len(row) == 11
+        assert len(row) == 12
 
 
 class SnowflakeTargetReservedWordsNoKeyProps(TargetFileTestTemplate):
@@ -327,7 +333,7 @@ class SnowflakeTargetReservedWordsNoKeyProps(TargetFileTestTemplate):
         )
         assert result.rowcount == 1
         row = result.first()
-        assert len(row) == 10
+        assert len(row) == 11
 
 
 class SnowflakeTargetColonsInColName(TargetFileTestTemplate):
@@ -346,7 +352,7 @@ class SnowflakeTargetColonsInColName(TargetFileTestTemplate):
         )
         assert result.rowcount == 1
         row = result.first()
-        assert len(row) == 11
+        assert len(row) == 12
         table_schema = connector.get_table(table)
         assert {column.name for column in table_schema.columns} == {
             "FOO::BAR",
@@ -360,6 +366,7 @@ class SnowflakeTargetColonsInColName(TargetFileTestTemplate):
             "_sdc_deleted_at",
             "_sdc_table_version",
             "_sdc_sequence",
+            "_sdc_sync_started_at",
         }
 
 
@@ -402,7 +409,7 @@ class SnowflakeTargetExistingTable(TargetFileTestTemplate):
         )
         assert result.rowcount == 1
         row = result.first()
-        assert len(row) == 12
+        assert len(row) == 13
 
 
 class SnowflakeTargetExistingTableAlter(SnowflakeTargetExistingTable):
@@ -456,6 +463,7 @@ class SnowflakeTargetTypeEdgeCasesTest(TargetFileTestTemplate):
             "_sdc_deleted_at": sct.TIMESTAMP_NTZ,
             "_sdc_table_version": sct.NUMBER,
             "_sdc_sequence": sct.NUMBER,
+            "_sdc_sync_started_at": sct.NUMBER,
         }
         for column in table_schema.columns:
             assert column.name in expected_types
